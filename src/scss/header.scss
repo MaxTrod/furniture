@@ -1,0 +1,411 @@
+//====================================================================================================
+.header {
+   position: fixed;
+   width: 100%;
+   top: 0;
+   left: 0;
+   z-index: 50;
+   transition: all 0.3s;
+   &._header-scroll {
+      background-color: #FFECD6;
+      .header__container {
+         min-height: toRem(60);
+      }
+   }
+   // .header__container
+   &__container {
+      transition: min-height 0.3s;
+      @include adaptiveValue("min-height", 156, 60);
+      padding-top: toRem(10);
+      padding-bottom: toRem(10);
+      display: grid;
+      grid-template-columns: 28% 1fr 28%;
+      align-items: center;
+      column-gap: toRem(10);
+      position: relative;
+      @media (max-width: em(1180)){
+         grid-template-columns: auto auto;
+         column-gap: toRem(10);
+      }
+      @media (max-width: em(640)){
+         grid-template-columns: auto;
+      }
+   }
+   // .header__logo
+   &__logo {
+      color: rgba(58, 58, 58, 0.80);
+      font-size: toRem(32);
+      font-weight: 700;
+      letter-spacing: toRem(0.32);
+      justify-self: start;
+      line-height: 1.56;
+      position: relative;
+      z-index: 12;
+      @media (max-width: em(640)){
+         position: absolute;
+         top: 50%;
+         transform: translate(0, -50%);
+         left: toRem(15);
+         font-size: toRem(27);
+      }
+      span {
+         color: $orangeColor;
+      }
+   }
+   // .header__menu
+   &__menu {}
+   // .header__actions
+   &__actions {
+      > *:not(:first-child) {
+         margin-left: toRem(40);
+      }
+      justify-self: end;
+      display: flex;
+      flex-direction: row-reverse;
+      font-size: toRem(20);
+      align-items: center;
+      position: relative;
+      z-index: 12;
+      overflow: hidden;
+      &._active-search {
+         .form-search {
+            width: 100%;
+            opacity: 1;
+            visibility: visible;
+            margin-left: 0;
+         }
+         .header__pic {
+            display: none;
+         }
+      }
+   }
+   // .header__cabinet
+   &__cabinet {
+      &::before {
+         transition: color 0.3s;
+      }
+      @media (any-hover: hover){
+         &:hover{
+            &::before {
+               color: $orangeColor;
+            }
+         }
+      }
+      @media (max-width:em(1180)) {
+         order: 2;
+      }
+      @media (max-width: em(640)){
+         display: none;
+         .menu-open & {
+            display: block;
+         }
+      }
+   }
+     // .header__pic
+     &__pic {
+      &::before {
+         transition: color 0.3s;
+      }
+      @media (any-hover: hover){
+         &:hover{
+            &::before {
+               color: $orangeColor;
+            }
+         }
+      }
+      transition: all 0.5s;
+      order: 1;
+      @media (max-width:em(1180)) {
+         order: 3;
+      }
+      @media (max-width: em(640)){
+         .menu-open & {
+            display: none;
+         }
+      }
+     
+      cursor: pointer;
+      opacity: 1;
+     }
+	// .header__icon
+	&__icon {
+      @media (max-width:em(1180)) {
+         order: 1;
+      }
+   }
+}
+.form-search {
+   order: 2;
+   @media (max-width:em(1180)) {
+      order: 4;
+   }
+   position: relative;
+   z-index: 13;
+   transition: all 0.5s;
+
+   width: 0;
+   visibility: hidden;
+   opacity: 0;
+
+   background-color: rgba(7, 7, 7, 0.03);
+	border-radius: toRem(15);
+	position: relative;
+	border: 1px solid rgba(4, 4, 4, 0.5);
+   @media (max-width: em(640)){
+      .menu-open & {
+         display: none;
+      }
+   }
+   // .search-header__button
+   &__button {
+      transition: color 0.3s;
+      position: absolute;
+		background-color: transparent;
+		height: toRem(41);
+		width: toRem(41);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		top: 0;
+		font-size: toRem(18);
+      &::before {
+         transition: color 0.3s;
+      }
+      @media (any-hover: hover){
+         &:hover{
+            &::before{color: $orangeColor;}
+         }
+      }
+   }
+   // .search-header__input
+   &__input {
+      width: 100%;
+		background-color: transparent;
+      @media (max-width: em(640)){
+         background-color: #fff;
+      }
+		border-radius: toRem(15);
+		height: toRem(41);
+		color: $mainColor;
+      font-size: toRem(16);
+		padding: 0px toRem(20) 0px toRem(50);
+		&::placeholder {
+			color: rgba(0, 0, 0, 0.5);
+		}
+   }
+}
+.menu {
+     @media (max-width: em(1180)) {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		left: -100%;
+		top: 0;
+		overflow: auto;
+		padding: toRem(150) toRem(15) toRem(15) toRem(15);
+      background-color: #FFECD6;
+		transition: left 0.3s;
+      z-index: 10;
+		&::before {
+			content: "";
+			position: fixed;
+			width: 100%;
+			height: toRem(156);
+			left: -100%;
+			top: 0;
+			transition: left 0.3s;
+			z-index: 12;
+		}
+		.menu-open & {
+			left: 0;
+			&::before {
+				left: 0;
+			}
+		}
+	}
+   // .menu__list
+   &__list {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: center;
+      font-size: toRem(20);
+      column-gap: toRem(10);
+      @media (max-width: em(1180)){
+         flex-direction: column; 
+         row-gap: toRem(20);
+         font-size: toRem(30);
+         align-items: stretch;
+      }
+   }
+   // .menu__item
+   &__item {
+      display: flex;
+      align-items: center;
+      @media (max-width: em(1180)){
+           justify-content: space-between;
+      }
+      column-gap: toRem(7);
+      flex-wrap: wrap;
+      position: relative;
+      padding-bottom: toRem(5);
+      @media (any-hover: hover) {
+			&:hover {
+				.menu__sub-list {
+					transform: translate(0px, 0px);
+					opacity: 1;
+					visibility: visible;
+					pointer-events: auto;
+				}
+				.menu__arrow {
+					transform: rotate(-180deg);
+				}
+				.menu__arrow,
+				.menu__link {
+					color: $orangeColor;
+				}
+			}
+		}
+      @media (min-width: em(1180)) {
+			&._hover {
+				.menu__sub-list {
+					transform: translate(0px, 0px);
+					opacity: 1;
+					visibility: visible;
+					pointer-events: auto;
+				}
+				.menu__arrow {
+					transform: rotate(-180deg);
+				}
+				.menu__arrow,
+				.menu__link {
+					color: $orangeColor;
+				}
+			}
+		}
+   }
+   // .menu__link
+   &__link {
+      display: block;
+      transition: color 0.3s ease 0s;
+   }
+		// .menu__arrow
+	&__arrow {
+      transition: all 0.3s ease 0s;
+      @media (max-width: em(1180)) {
+			font-size: toRem(14);
+			&._active {
+				transform: rotate(-180deg);
+			}
+		}
+      &::before {
+         font-size: toRem(9);
+         @media (max-width: em(1180)){
+            font-size: toRem(12);
+         }
+      }
+   }
+	// .menu__sub-list
+	&__sub-list {
+      position: relative;
+		background-color: $orangeColor;
+		padding: toRem(15);
+      border-radius: toRem(10);
+      flex: 1 1 100%;
+      @media (min-width: em(1180)) {
+         position: absolute;
+         top: 100%;
+         left: 0;
+         z-index: 5;
+         min-width: toRem(180);
+         transition: all 0.3s ease 0s;
+
+         transform: translate(0px, toRem(10));
+         visibility: hidden;
+         opacity: 0;
+         pointer-events: none;
+      }
+      @media (max-width: em(1180)) {
+			margin: toRem(0) toRem(-15) 0px toRem(-15);
+         border-radius: 0;
+		}
+   }
+	// .menu__sub-item
+	&__sub-item {}
+	// .menu__sub-link
+	&__sub-link {
+      color: #fff;
+      @media (any-hover: hover) {
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+   }
+}
+.spollers {
+   // .spollers__item
+   &__item {}
+   // .spollers__title
+   &__title {}
+   // .spollers__body
+   &__body {}
+   // .spollers__list
+   &__list {}
+	// .spollers__li
+	&__li {}
+	// .spollers__link
+	&__link {}
+}
+//===================================== Burger ===================================================================================================================
+.icon-menu {
+	display: none;
+	@media (max-width: em(1180)) {
+      // margin-left: toRem(40);
+		display: block;
+		position: relative;
+      flex: 0 0 toRem(30);
+		width: toRem(30);
+		height: toRem(18);
+		z-index: 15;
+		@media (any-hover: none) {
+			cursor: default;
+		}
+		span,
+		&::before,
+		&::after {
+			content: "";
+			transition: all 0.3s ease 0s;
+			right: 0;
+			position: absolute;
+			width: 100%;
+			height: toRem(2);
+			background-color: #000;
+		}
+		&::before {
+			top: 0;
+		}
+		&::after {
+			bottom: 0;
+		}
+		span {
+			top: calc(50% - toRem(1));
+		}
+		.menu-open & {
+			span {
+				width: 0;
+			}
+			&::before,
+			&::after {
+			}
+			&::before {
+				top: calc(50% - toRem(1));
+				transform: rotate(-45deg);
+			}
+			&::after {
+				bottom: calc(50% - toRem(1));
+				transform: rotate(45deg);
+			}
+		}
+	}
+}
+//====================================================================================================

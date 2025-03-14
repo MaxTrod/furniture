@@ -1,0 +1,961 @@
+@use "sass:math";
+
+// Підключення міксинів ===========================================================================================================================================================================================================================================================================
+@import "base/mixins";
+
+// Підключення шрифтів ===========================================================================================================================================================================================================================================================================
+//&display=swap - додати при підключенні через плагін
+@import url('https://fonts.googleapis.com/css?family=Roboto:regular,500,700&display=swap');
+// Підключити, якщо є локальні файли шрифтів
+@import "fonts/fonts";
+
+// Підключення іконкових шрифтів ==============================================================================================================================================================================================================================================================================
+// Підключити, якщо є файл іконкового шрифту
+@import "fonts/icons";
+
+// ============================================================================================================================================================================================================================================================================================================================================================================================
+// Налаштування шаблону ============================================================================================================================================================================================================================================================================================================================================================================================
+// ============================================================================================================================================================================================================================================================================================================================================================================================
+
+// За замовчуванням шрифт ==============================================================================================================================================================================================================================================================================
+$fontFamily: "Roboto";
+$fontSize: toRem(16); // де 14(px) - розмір шрифту за замовчуванням з макету
+
+// Основні кольори
+$mainColor: #4B4B4B; // Колір шрифту за замовчуванням
+$orangeColor: #FFAD4C;
+$bgcolor: #FEF7EF;
+
+// Палітра кольорів
+// @import "base/colors-palette";
+
+// Налаштування адаптивної сітки ===============================================================================================================================================================================================================================================================================================
+
+// Мінімальна ширина сторінки
+$minWidth: 320;
+// Ширина полотна (макету)
+$maxWidth: 1440;
+// Ширина обмежуючого контейнера (0 = немає обмеження)
+$maxWidthContainer: 1343;
+// Загальний відступ у контейнера
+// (30 = по 15px ліворуч і праворуч, 0 = немає відступу)
+$containerPadding: 30;
+
+// Ширина спрацьовування першого брейкпоінту
+$containerWidth: $maxWidthContainer + $containerPadding;
+
+// Брейк-поїнти
+$pc: em($containerWidth); // ПК, ноутбуки, деякі планшети у горизонтальному положенні
+$tablet: em(991.98); // Планшети, деякі телефони в горизонтальному положенні
+$mobile: em(767.98); // Телефони L
+$mobileSmall: em(479.98); // Телефони S
+
+// Тип адаптива:
+// 1 = чуйність (у контейнера немає брейкпоінтів),
+// 2 = по брейк-поїнт (контейнер змінює свою ширину по брейк-поїнт)
+$responsiveType: 1;
+
+// ============================================================================================================================================================================================================================================================================================================================================================================================
+// ============================================================================================================================================================================================================================================================================================================================================================================================
+
+// Обнулення ============================================================================================================================================================================================== =============================================================================================== ===============================================================================================
+@import "base/null";
+
+// Стилі тега BODY ============================================================================================================================================================================================================================================================================================================================================================================================
+body {
+	background-color: $bgcolor;
+	line-height: 1.4;
+	color: $mainColor;
+	// Скролл заблоковано
+	.lock & {
+		overflow: hidden;
+		touch-action: none;
+		overscroll-behavior: none;
+	}
+	// Сайт завантажений
+	.loaded & {
+	}
+}
+// Оболонка wrapper ============================================================================================================================================================================================================================================================================================================================================================================================================================================
+.wrapper {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	@supports (overflow: clip) {
+		overflow: clip;
+	}
+	// Притискаємо footer
+	> main {
+		flex: 1 1 auto;
+	}
+	// Фікс для слайдерів
+	> * {
+		min-width: 0;
+	}
+}
+// Обмежуючий контейнер ======================================================================================================================================================================================================================
+/*
+(i) Стилі будуть застосовуватись до
+всіх класів, що містять *__container
+Наприклад header__container, main__container і т.п.
+Сніппет (HTML): cnt
+*/
+@if ($responsiveType==1) {
+	// Чуйна
+	[class*="__container"] {
+		@if ($maxWidthContainer>0) {
+			max-width: toRem($containerWidth);
+			margin: 0 auto;
+		}
+		@if ($containerPadding>0) {
+			@if ($maxWidthContainer>0) {
+				padding: 0 toRem(math.div($containerPadding, 2));
+			} @else {
+				@include adaptiveValue("padding-left", math.div($containerPadding, 2), 15);
+				@include adaptiveValue("padding-right", math.div($containerPadding, 2), 15);
+			}
+		}
+	}
+} @else {
+	// Брейк-поїнтами
+	[class*="__container"] {
+		margin: 0 auto;
+		@if ($maxWidthContainer>0) {
+			max-width: toRem($containerWidth);
+		} @else {
+			@if ($containerPadding>0) {
+				padding: 0 toRem(math.div($containerPadding, 2));
+			}
+		}
+		@media (max-width: $pc) {
+			max-width: toRem(970);
+		}
+		@media (max-width: $tablet) {
+			max-width: toRem(750);
+		}
+		@media (max-width: $mobile) {
+			max-width: none;
+			@if ($containerPadding>0 and $maxWidthContainer>0) {
+				padding: 0 toRem(math.div($containerPadding, 2));
+			}
+		}
+	}
+}
+
+// Підключення базових стилів, шаблонів (заготівель) та допоміжних класів
+// Для підключення/вимкнення конкретних стилів дивись base.scss
+@import "base";
+
+// Підключення стилів загальних елементів проекту
+@import "common";
+
+// Підключення стилів окремих блоків
+@import "header";
+@import "footer";
+
+// Підключення стилів окремих сторінок
+// @import "home";
+
+
+
+
+.hero {
+	@include adaptiveValue("padding-top", 190, 70);
+	@include adaptiveValue("padding-bottom", 48, 40);
+	// .hero__container
+	&__container {
+		 display: flex;
+		 align-items: flex-end;
+		 @media (max-width:$tablet){
+				flex-direction: column;
+		 }
+	}
+	// .hero__content
+	&__content {
+		 @include adaptiveValue("margin-top", 64, 20, 0, $maxWidthContainer, 991.98);
+		 @include adaptiveValue("margin-bottom", 130, 60, 0, $maxWidthContainer, 991.98);
+		 @media (max-width:$tablet){
+				margin-top: 0;
+				margin-bottom: toRem(30);
+		 }
+		 align-self: flex-start;
+		 flex: 0 0 47.4%; 
+	}
+	// .hero__slider
+	&__slider {
+		flex: 1 1 auto;
+		min-width: 0;
+		width: 100%;
+		@media (min-width:$tablet){
+			margin-left: -17.4%;
+		}
+	}
+}
+.content-hero {
+	border-radius: toRem(16);
+	position: relative;
+	@media (min-width: $tablet){
+		 @include adaptiveValue("padding-bottom", 32, 16, 0, $maxWidthContainer, 991.98);
+		 @include adaptiveValue("padding-top", 32, 16, 0, $maxWidthContainer, 991.98);
+		 @include adaptiveValue("padding-left", 48, 16, 0, $maxWidthContainer, 991.98);
+		 @include adaptiveValue("padding-right", 24, 16, 0, $maxWidthContainer, 991.98);
+		 z-index: 3;
+		 background: rgba(248, 248, 248, 0.77);    
+		 @supports ((-webkit-backdrop-filter: blur(4.5px)) or (backdrop-filter: blur(4.5px))) {
+		 background: rgba(255, 255, 255, 0.72);
+		 backdrop-filter: blur(4.5px);
+	 }
+	}
+	// .content-hero__title
+	&__title {
+		 color: $orangeColor;
+		 @media (min-width: $tablet){
+				@include adaptiveValue("font-size", 64, 50, 0, $maxWidthContainer, 991.98);
+		 }
+		 @media (max-width:$tablet){
+				@include adaptiveValue("font-size", 50, 36);
+		 }
+		 font-weight: 700;
+		 line-height: 1.15; /* 115.625% */
+		 letter-spacing: toRem(0.64);
+		 text-transform: capitalize;
+		 &:not(:last-child) {
+				@include adaptiveValue("margin-bottom", 24, 12);
+		 }
+	}
+	// .content-hero__text
+	&__text {
+		 // max-width: toRem(521);
+		 p {
+				@include adaptiveValue("font-size", 24, 18);
+				line-height: 1.4;
+				letter-spacing: toRem(0.24);
+				&:not(:last-child) {
+					 margin-bottom: toRem(10);
+				}
+		 }
+		 &:not(:last-child) {
+				@include adaptiveValue("margin-bottom", 32, 12);
+		 }
+	}
+	// .content-hero__button
+	&__button {}
+}
+.slider-hero {
+	position: relative;
+	 // .slider-hero__body
+	 &__body {
+		 @media (min-width: $tablet){
+				padding-left: toRem(50);
+				padding-bottom: toRem(50);
+		 }
+		 @media (max-width:$mobile){
+				 margin: 0 toRem(-15); 
+		 }
+		 position: relative;
+		 &::before {
+				content: '';
+				position: absolute;
+				width: 93%; /* 890/1343 */
+				height: 93%; /* 640/1343 */
+				bottom: 0;
+				left: 0;
+				background-color: #FFECD6;
+				@media (max-width: $tablet){
+					 display: none;
+				}
+		 }
+	 }
+	// .slider-hero__wrapper
+	&__wrapper {}
+	// .slider-hero__slide
+	&__slide {}
+	// .slider-hero__image
+	&__image {}
+	// .slider-hero__navigation
+	&__navigation {
+		right: toRem(24);
+		bottom: toRem(24);
+		 @media (min-width:$tablet){
+				bottom: toRem(24);
+				left: toRem(24);
+		 }
+		 @media (max-width:$mobile){
+				display: none;
+		 }
+	}
+	// .slider-hero__controll
+	&__controll {}
+}
+.controll-hero {
+	position: absolute;
+	z-index: 5;
+	bottom: toRem(82);
+	right: toRem(24);
+	pointer-events: none;
+	display: flex;
+	align-items: flex-start;
+	@media (max-width: $tablet){
+		left: toRem(24);
+		bottom: toRem(42);
+	}
+	@media (max-width:$mobile){
+		 justify-content: center;
+		 bottom: toRem(10);
+		 left: 50%;
+		 transform: translate(-50%, 0);
+		 
+	}
+	// .controll-hero__fraction
+	&__fraction {}
+}
+.fraction-controll {
+	color: #fff;
+	display: flex;
+	align-items: center;
+	column-gap: toRem(21);
+	@media (max-width: $tablet){
+		 background-color: $mainColor;
+		 border-radius: toRem(16);
+		 opacity: 0.7;
+		 padding: toRem(10);
+	}
+	@media (max-width: $mobile){
+		 column-gap: toRem(15);
+		 padding-top: toRem(2);
+		 padding-bottom: toRem(2);
+		 opacity: 0.8;
+	}
+	// .fraction-controll__current
+	&__current, &__all {
+		 color: #fff;
+		 font-size: toRem(24);
+		 font-weight: 700;
+		 line-height: 1.4; /* 141.667% */
+		 letter-spacing: toRem(0.24);
+		 text-transform: capitalize;   
+	}
+	// .fraction-controll__pagination
+	&__pagination {
+		 background: #D3D3D3;
+		 height: toRem(2);
+		 border-radius: toRem(2);
+		 width: toRem(112);
+		 @media (max-width: $mobile){
+				width: toRem(80);
+				height: toRem(3);
+		 }
+		 position: relative;
+		 span {
+				background: #fff;
+				position: absolute;
+				border-radius: toRem(2);
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				transform-origin: left top;
+		 }
+	}
+	// .fraction-controll__all
+	&__all {
+		 opacity: 0.6;
+	}
+}
+//========================================================================================================================================================
+.clients {
+	@include adaptiveValue("padding-top", 48, 40);
+	@include adaptiveValue("padding-bottom", 80, 40);
+	// .clients__container
+	&__container {}
+	// .clients__title
+	&__title {
+		 text-align: center;
+		 font-size: toRem(24);
+		 opacity: 0.6;
+		 font-weight: 700;
+		 line-height: 1.4; /* 175% */
+		 letter-spacing: toRem(0.24);
+		 &:not(:last-child) {
+				@include adaptiveValue("margin-bottom", 64, 20);
+		 }
+	}
+	// .clients__items
+	&__items {
+		 max-width: toRem(1109);
+		 margin: 0 auto;
+		 display: flex;
+		 justify-content: space-between;
+		 align-items: center;
+		 flex-wrap: wrap;
+		 column-gap: toRem(20);
+		 row-gap: toRem(10);
+		 @media (max-width:$mobile){
+				justify-content: center;
+		 }
+	}
+	// .clients__item
+	&__item {
+		 img {
+				max-width: 100%;
+		 }
+	}
+}
+//========================================================================================================================================================
+.interiors {
+	@include adaptiveValue("padding-top", 80, 40);
+	@include adaptiveValue("padding-bottom", 66, 40);
+	// .interiors__container
+	&__container {
+		 position: relative;
+		 display: grid;
+		 grid-template-columns: 48% 1fr; /* 649/1343 */
+		 row-gap: toRem(32);
+		 align-items: start;
+		 column-gap: toRem(48);
+		 @media (max-width:$tablet){
+				display: flex;
+				flex-direction: column; 
+				align-items: stretch;
+		 }
+		 &::after,
+		 &::before {
+				content: '';
+				position: absolute;
+				border-radius: 50%;
+				@supports ((-webkit-filter: blur(209.5px)) or (filter: blur(209.5px))) {
+					 background: rgb(255, 173, 76);
+					 filter: blur(209.5px);
+				}
+				z-index: 1;
+		 }
+		 &::before{
+				width: toRem(612); 
+				height: toRem(612); 
+				top: -20%;
+				left: -15%;
+				opacity: 0.2;
+				@media (max-width:$tablet){
+					 top: -7%;
+					 left: -10%;
+					 width: toRem(500); 
+					 height: toRem(500); 
+				}
+				@media (max-width:$mobileSmall){
+					 top: -2%;
+					 width: toRem(300); 
+					 height: toRem(300); 
+				}
+		 }
+		 &::after{
+				width: toRem(316); 
+				height: toRem(316); 
+				bottom: -10%;
+				right: -7%;
+				opacity: 0.32;
+				@media (max-width:$tablet){
+					 bottom: -5%;
+					 right: -4%;
+				}
+		 }
+	}
+	// .interiors__title
+	&__title {
+		 position: relative;
+		 z-index: 2;
+		 @media (min-width:$tablet){
+				align-self: end;
+				max-width: toRem(429);
+		 }
+		 order: 1;
+	}
+	// .interiors__slider
+	&__slider {
+		 position: relative;
+		 order: 3;
+		 @media (max-width:$tablet){
+				order: 2;
+		 }
+		 @media (max-width:$mobile){
+				 margin: 0 toRem(-15); 
+		 }
+	}
+	// .interiors__info-blocks
+	&__info-blocks {
+		 order: 2;
+		 grid-row: span 2;
+		 @media (max-width:$tablet){
+				order: 3;
+				grid-row: auto;
+		 }
+	}
+}
+.slider-interior {
+	position: relative;
+	z-index: 2;
+	@media (min-width:$tablet){
+		 padding-right: toRem(24);
+		 padding-bottom: toRem(32);
+		 &::before {
+				content: '';
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				width: 93%;
+				height: 93%;
+				background-color: #FFECD6;
+				opacity: 0.6;
+				border-radius: toRem(8);
+		 } 
+	}
+	// .slider-interior__wrapper
+	&__wrapper {}
+	// .slider-interior__slide
+	&__slide {}
+	// .slider-interior__picture
+	&__picture {
+		 position: relative;
+		 z-index: 3;
+		 img {
+				max-width: 100%;
+				@media (max-width:$tablet){
+					 width: 100%;
+					 min-height: toRem(300);
+				}
+		 }
+	}
+	// .slider-interior__navigation
+	&__navigation {
+		 bottom: toRem(16);
+		 right: toRem(16);
+		 z-index: 2;
+		 @media (max-width:$mobile){
+				 display: none; 
+		 }
+	}
+}
+.info-interior {
+	min-height: 100%;
+	// .info-interior__items
+	&__items {
+		 display: grid;
+		 row-gap: toRem(40);
+		 justify-content: space-between;
+		 @media (min-width:em(1200)){
+				padding-right: toRem(104);
+		 }
+	}
+	// .info-interior__item
+	&__item {
+		 img {
+				max-width: 100%;
+		 }
+	}
+}
+.item-interior {
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: center;
+	@media (max-width:$mobileSmall){
+		 flex-direction: column;
+		 row-gap: toRem(15);
+		 align-items: flex-start;
+	}
+	// .item-interior__image
+	&__image {
+		 border-radius: toRem(8);
+		 overflow: hidden;
+		 flex: 0 0 toRem(202);
+		 height: toRem(202);
+		 aspect-ratio: 1 / 1;
+		 @media (max-width:$mobileSmall){
+				flex: 1 1 100%;
+		 }
+		 img {
+				transition: transform 0.3s;
+		 }
+		 @media (any-hover: hover){
+				&:hover{
+					 img {
+							transform: scale(1.2);
+					 }
+				}
+		 }
+	}
+	// .item-interior__body
+	&__body {
+		 padding-left: toRem(24);
+		 flex: 1 1 auto;
+		 display: flex;
+		 flex-direction: column;
+		 align-items: flex-start;
+		 min-height: 100%;
+		 line-height: 1.4;
+		 @media (max-width:$mobileSmall){
+				min-height: auto;
+				row-gap: toRem(10);
+				padding-left: 0;
+		 } 
+	}
+	// .item-interior__link-title
+	&__link-title {
+		 &:not(:last-child) {
+				margin-bottom: toRem(8);
+		 }
+	}
+	// .item-interior__title
+	&__title {
+		 transition: color 0.3s;
+		 font-size: toRem(24);
+		 font-weight: 700;
+		 letter-spacing: toRem(0.24);
+		 &:not(:last-child) {
+				margin-bottom: toRem(8);
+		 }
+		 @media (any-hover: hover){
+				&:hover{
+					 color: $orangeColor;
+				}
+		 }
+	}
+	// .item-interior__text
+	&__text {
+		 flex: 1 1 auto;
+		 padding-bottom: toRem(8);
+		 // max-width: toRem(317);
+		 p {
+				&:not(:last-child) {
+					 margin-bottom: toRem(10);
+				}
+		 }
+	}
+	// .item-interior__link
+	&__link {
+		 transition: color 0.3s;
+		 font-size: toRem(17);
+		 font-weight: 500;
+		 letter-spacing: toRem(0.17);
+		 display: flex;
+		 align-items: center;
+		 order: 2;
+		 column-gap: toRem(24);
+		 &::before {
+				order: 1;
+				font-size: toRem(10);
+				color: $orangeColor;
+				transform: rotate(-90deg);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+		 }
+		 @media (any-hover: hover){
+				&:hover{
+					 color: $orangeColor;
+				}
+		 }
+	}
+}
+//========================================================================================================================================================
+.products {
+	@include adaptiveValue("padding-top", 66, 40);
+	@include adaptiveValue("padding-bottom", 112, 40);
+	// .products__container
+	&__container {}
+	// .products__header
+	&__header {
+		 &:not(:last-child) {
+				@include adaptiveValue("margin-bottom", 24, 14);
+		 }
+	}
+	// .products__body
+	&__body {}
+}
+.header-products {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	// .header-products__title
+	&__title {}
+	// .header-products__link
+	&__link {
+		 transition: color 0.3s;
+		 display: flex;
+		 flex-direction: row-reverse;
+		 align-items: center;
+		 column-gap: toRem(24);
+		 &::before {
+				transform: rotate(-90deg);
+				font-size: toRem(10);
+				color: $orangeColor;
+		 }
+		 @media (any-hover: hover){
+				&:hover{
+					 color: $orangeColor;
+				}
+		 }
+	}
+}
+.body-products {
+	// .body-products__navigation
+	&__navigation {
+		 display: flex;
+		 flex-wrap: wrap;
+		 column-gap: toRem(24);
+		 row-gap: toRem(10);
+		 &:not(:last-child) {
+				@include adaptiveValue("margin-bottom", 48, 30);
+		 }
+	}
+	// .body-products__type
+	&__type {
+		 transition: color 0.3s;
+		 font-size: toRem(14);
+		 color: $mainColor;
+		 opacity: 0.7;
+		 line-height: 140%;
+		 &.active {
+				font-weight: 700;
+				opacity: 1;
+				color: $orangeColor;
+		 }
+		 @media (any-hover: hover){
+				&:hover{
+					 color: $orangeColor;
+				}
+		 }
+	}
+	// .body-products__items
+	&__items {
+		 display: grid;
+		 grid-template-columns: repeat(auto-fill, minmax(toRem(280), 1fr));
+		 gap: toRem(32);
+		 justify-content: flex-start;
+	}
+	// .body-products__item
+	&__item {
+		 min-height: toRem(400);
+	}
+}
+.item-product {
+	overflow: hidden;
+	border-radius: toRem(8);
+	transition: all 0.3s;
+	z-index: 5;
+	@media (any-hover: hover){
+		 &:hover{
+				transform: scale(1.1);
+				&::before {
+					 opacity: 1;
+				}
+		 }
+	}
+	padding: toRem(32) toRem(24) toRem(24) toRem(24);
+	position: relative;
+	&::before {
+		 content: '';
+		 position: absolute;
+		 top: 0;
+		 left: 0;
+		 width: 100%;
+		 height: 100%;
+		 background-color: #FFECD6;
+		 opacity: 0.6;
+		 z-index: 2;
+	}
+	// .item-product__header
+	&__header {
+		 flex-grow: 1;
+		 position: relative;
+		 z-index: 3;
+		 display: flex;
+		 align-items: center;
+		 justify-content: space-between;
+	}
+	// .item-product__label
+	&__label {
+		 font-size: toRem(14);
+		 color: $mainColor;
+		 opacity: 0.7;
+		 line-height: 140%;
+		 &:not(:last-child) {
+				margin-bottom: toRem(4);
+		 }
+	}
+	// .item-product__title
+	&__title {
+		 &:not(:last-child) {
+				margin-bottom: toRem(4);
+		 }
+	}
+	// .item-product__link-title
+	&__link-title {
+		 font-size: toRem(20);
+		 line-height: 140%;
+		 font-weight: 700;
+		 @media (any-hover: hover){
+				&:hover{
+					 text-decoration: underline;
+				}
+		 }
+	}
+	&__cart {
+		 margin-bottom: toRem(15);
+		 flex: 0 0 toRem(14);
+		 height: toRem(14);
+		 border-radius: 50%;
+		 background-color: #fff;
+		 display: flex;
+		 align-items: center;
+		 justify-content: center;
+		 position: relative;
+		 &::before {
+				position: absolute;
+				content: '+';
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				width: toRem(10);
+				height: toRem(10);
+				background-color: $orangeColor;
+				border-radius: 50%;  
+				color: #fff;
+				z-index: 2;
+		 }
+		 &::after {
+				position: absolute;
+				content: '';
+				width: toRem(40);
+				height: toRem(40);
+				top: -9px;
+				left: -18px;
+				background-color: #fdeedb;
+				border-radius: 50%;
+				background-image: url('@img/icons/cart.svg');
+				background-repeat: no-repeat;
+				background-position: 5px 10px;
+				background-size: 24px auto;
+				z-index: -1;
+		 }
+		 span {
+				opacity: 0;
+				visibility: hidden;
+				transition: all 0.3s;
+				position: relative;
+				z-index: 2;
+				font-size: toRem(8);
+				font-weight: 700;
+				color: $mainColor;
+		 }
+		 @media (any-hover: hover){
+				&:hover{
+					 flex: 0 0 toRem(28);
+					 height: toRem(28);
+					 span {
+							display: block;
+					 }
+					 &::before {
+							// content: '';
+							width: toRem(20);
+							height: toRem(20);
+							font-size: toRem(22);
+					 }
+					 &::after {
+							width: toRem(80);
+							height: toRem(80);
+							top: -18px;
+							left: -36px;
+							background-position: 10px 20px;
+							background-size: 48px auto;
+					 }
+					 span {
+							font-size: toRem(16);
+					 }
+				}
+		 }
+		 @media (max-width:$mobile){
+				flex: 0 0 toRem(19.6);
+				height: toRem(19.6);
+				span {
+					 display: block;
+				}
+				&::before {
+					 width: toRem(14);
+					 height: toRem(14);
+				}
+				&::after {
+					 width: toRem(56);
+					 height: toRem(56);
+					 top: -12.6px;
+					 left: -26px;
+					 background-position: 7px 14px;
+					 background-size: 33.6px auto;
+				}
+				span {
+					 font-size: toRem(11.2);
+				}
+		 }
+		 &:active {
+				&::before {
+					 content: '';
+				}
+				span {
+					 opacity: 1;
+					 visibility: visible;
+				}
+		 }
+	}
+	// .item-product__image
+	&__image {
+		 position: absolute;
+		 z-index: 3;
+		 width: 74.038462%; /* 231/312 */
+		 height: 80%;
+		 right: 0;
+		 bottom: 0;
+		 padding-bottom: toRem(10);
+		 img {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: bottom;
+		 }
+	}
+	// .item-product__price
+	&__price {
+		 position: relative;
+		 z-index: 3;
+		 position: absolute;
+		 bottom: toRem(24);
+		 left: toRem(24);
+		 color: $orangeColor;
+		 line-height: 140%;
+		 padding: toRem(12) toRem(24);
+		 @media (min-width:$mobile){
+				@supports ((-webkit-backdrop-filter: blur(4px)) or (backdrop-filter: blur(4px))) {
+					 background: rgba(255, 255, 255, 0.45);
+					 backdrop-filter: blur(4px);
+				}
+		 }
+		 background: rgba(255, 255, 255, 0.45);
+		 border-radius: toRem(36);
+		 font-size: toRem(14);
+		 font-weight: 700;
+	}
+}
+.item-product--4 {
+	.item-product__image {
+		 margin-right: toRem(-40);
+	}
+	img {
+		 transform: scale(1.2);
+		 object-position: right;
+	}
+}
+
+
+

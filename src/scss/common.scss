@@ -1,0 +1,75 @@
+// Заголовки, загальні БЕМ блоки та інше...
+.page {
+
+   // .page__hero
+   &__hero {}
+
+    // .page__clients
+   &__clients {}
+
+   // .page__interiors
+   &__interiors {}
+
+    // .page__products
+   &__products {}
+
+}
+// h2 title styles========================================================================================================================================================
+.title {
+   font-size: toRem(32);
+   font-weight: 700;
+   line-height: 1.4; /* 44.8px */
+   letter-spacing: toRem(0.32);
+   &_w {
+		color: #fff;
+	}
+}
+//========================================================================================================================================================
+.navigation-slider {
+   position: absolute;
+   width: toRem(176); 
+   height: toRem(80); 
+   display: flex;
+   justify-content: space-between;
+   // .navigation-slider__next
+   &__next,
+   &__prev {
+      transition: all 0.3s;
+      flex: 0 0 45.454545%; /* 80/176 */
+      height: 100%;
+      background: #fff;
+      opacity: 0.8;
+      border-radius: toRem(8);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &::before {
+         transition: all 0.3s;
+         color: $orangeColor;
+         font-size: toRem(25);
+      }
+      @media (any-hover: hover){
+         &:hover{
+            background-color: $orangeColor;
+            &::before {
+               color: $mainColor;
+            }
+         }
+      }
+   }
+   &__next {
+      &::before {
+         transform: rotate(180deg);
+      }
+   }
+   // .navigation-slider__prev
+   &__prev {}
+}
+
+
+
+
+
+
+
