@@ -32,7 +32,7 @@ $bgcolor: #FEF7EF;
 // Налаштування адаптивної сітки ===============================================================================================================================================================================================================================================================================================
 
 // Мінімальна ширина сторінки
-$minWidth: 320;
+$minWidth: 360;
 // Ширина полотна (макету)
 $maxWidth: 1440;
 // Ширина обмежуючого контейнера (0 = немає обмеження)
@@ -239,8 +239,6 @@ body {
 				@include adaptiveValue("margin-bottom", 32, 12);
 		 }
 	}
-	// .content-hero__button
-	&__button {}
 }
 .slider-hero {
 	position: relative;
@@ -267,12 +265,6 @@ body {
 				}
 		 }
 	 }
-	// .slider-hero__wrapper
-	&__wrapper {}
-	// .slider-hero__slide
-	&__slide {}
-	// .slider-hero__image
-	&__image {}
 	// .slider-hero__navigation
 	&__navigation {
 		right: toRem(24);
@@ -285,8 +277,6 @@ body {
 				display: none;
 		 }
 	}
-	// .slider-hero__controll
-	&__controll {}
 }
 .controll-hero {
 	position: absolute;
@@ -509,10 +499,6 @@ body {
 				border-radius: toRem(8);
 		 } 
 	}
-	// .slider-interior__wrapper
-	&__wrapper {}
-	// .slider-interior__slide
-	&__slide {}
 	// .slider-interior__picture
 	&__picture {
 		 position: relative;
@@ -668,8 +654,6 @@ body {
 				@include adaptiveValue("margin-bottom", 24, 14);
 		 }
 	}
-	// .products__body
-	&__body {}
 }
 .header-products {
 	display: flex;

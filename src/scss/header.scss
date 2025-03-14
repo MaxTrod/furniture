@@ -23,12 +23,15 @@
       align-items: center;
       column-gap: toRem(10);
       position: relative;
-      @media (max-width: em(1180)){
-         grid-template-columns: auto auto;
+
+      @media (max-width: em(1180)) {
          column-gap: toRem(10);
+         grid-template-columns: auto auto;
       }
-      @media (max-width: em(640)){
-         grid-template-columns: auto;
+      @media (max-width: em(640)) {
+         display: flex;
+         justify-content: flex-end;
+         // justify-content: space-between;
       }
    }
    // .header__logo
@@ -41,19 +44,15 @@
       line-height: 1.56;
       position: relative;
       z-index: 12;
-      @media (max-width: em(640)){
-         position: absolute;
-         top: 50%;
-         transform: translate(0, -50%);
-         left: toRem(15);
+      @media (max-width: em(640)) {
          font-size: toRem(27);
+         position: absolute;
+         left: 15px;
       }
       span {
          color: $orangeColor;
       }
    }
-   // .header__menu
-   &__menu {}
    // .header__actions
    &__actions {
       > *:not(:first-child) {
@@ -77,6 +76,10 @@
          .header__pic {
             display: none;
          }
+      }
+
+      @media (max-width: em(640)) {
+         justify-self: flex-end;
       }
    }
    // .header__cabinet
@@ -210,7 +213,8 @@
 			content: "";
 			position: fixed;
 			width: 100%;
-			height: toRem(156);
+         background-color: #FFECD6;
+         @include adaptiveValue("min-height", 156, 60);
 			left: -100%;
 			top: 0;
 			transition: left 0.3s;
@@ -243,7 +247,7 @@
       display: flex;
       align-items: center;
       @media (max-width: em(1180)){
-           justify-content: space-between;
+         justify-content: space-between;
       }
       column-gap: toRem(7);
       flex-wrap: wrap;
@@ -330,8 +334,6 @@
          border-radius: 0;
 		}
    }
-	// .menu__sub-item
-	&__sub-item {}
 	// .menu__sub-link
 	&__sub-link {
       color: #fff;
@@ -341,20 +343,6 @@
 			}
 		}
    }
-}
-.spollers {
-   // .spollers__item
-   &__item {}
-   // .spollers__title
-   &__title {}
-   // .spollers__body
-   &__body {}
-   // .spollers__list
-   &__list {}
-	// .spollers__li
-	&__li {}
-	// .spollers__link
-	&__link {}
 }
 //===================================== Burger ===================================================================================================================
 .icon-menu {
